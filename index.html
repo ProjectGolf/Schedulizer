@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Find all possible schedules you can take next quarter">
+    <meta name="author" content="Team Golf">
+    <link rel="shortcut icon" href="favicon_2.ico" type="image/x-icon">
+    <link rel="icon" href="favicon_2.ico" type="image/x-icon">
+
+    <title>NU Course Schedulizer</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="http://getbootstrap.com/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="index.js"></script>
+
+
+
+</head>
+ <style> .this-container{padding-top:25px;}
+        </style>
+<body>
+    <div class="container this-container">
+        <div class="panel panel-primary this-panel">
+            <div class="panel-heading">Step 1: Choose Your Courses</div>
+            <div class="panel-body">
+
+                <div id="Courses">
+                <!--Course 1 -->
+                <form name="Course1" class="form-inline" role="form">
+                    <h4><span> Course 1: 
+                    <div class="form-group">
+                        <label class="sr-only" for="Subj1">Subject</label>
+                        <input type="text" class="form-control" name="Subj1" placeholder="Subject (e.g. EECS)">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="CourseNum1">Course Number</label>
+                        <input type="text" class="form-control" name="CourseNum1" placeholder="Course # (e.g. 230)">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="required1"> Required
+                        </label>
+                    </div>
+                    </span></h4>
+                </form></br>
+
+                <!--Course 2 -->
+                <form name="Course2" class="form-inline" role="form">
+                    <h4><span> Course 2:
+                    <div class="form-group">
+                        <label class="sr-only" for="Subj2">Subject</label>
+                        <input type="text" class="form-control" name="Subj2" placeholder="Subject (e.g. EECS)">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="CourseNum2">Course Number</label>
+                        <input type="text" class="form-control" name="CourseNum2" placeholder="Course # (e.g. 230)">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="required2"> Required
+                        </label>
+                    </div>
+                    </span></h4>
+                </form></br>
+                <!--Course 3 -->
+                <form name="Course3" class="form-inline" role="form">
+                    <h4><span> Course 3:
+                    <div class="form-group">
+                        <label class="sr-only" for="Subj3">Subject</label>
+                        <input type="text" class="form-control" name="Subj3" placeholder="Subject (e.g. EECS)">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="CourseNum3">Course Number</label>
+                        <input type="text" class="form-control" name="CourseNum3" placeholder="Course # (e.g. 230)">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="required3"> Required
+                        </label>
+                    </div>
+                    </span></h4>
+                </form></br>
+                 <!--Course 4 -->
+                <form name="Course4" class="form-inline" role="form">
+                    <h4><span> Course 4:
+                    <div class="form-group">
+                        <label class="sr-only" for="Subj4">Subject</label>
+                        <input type="text" class="form-control" name="Subj4" placeholder="Subject (e.g. EECS)">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="CourseNum4">Course Number</label>
+                        <input type="text" class="form-control" name="CourseNum4" placeholder="Course # (e.g. 230)">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="required4"> Required
+                        </label>
+                    </div>
+                    </span></h4>
+                </form></br>
+                <button type="submit" class="btn btn-primary" onclick="buildSchedule()">Submit</button>
+            </br></br>
+            </div>
+
+
+
+
+
+
+            </div>
+        </div>
+
+    </div> 
+</body>
+
+</html>
+
