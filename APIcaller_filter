@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src='../lib/jquery.min.js'></script>
+<script src='../lib/jquery-ui.custom.min.js'></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+<h2 id="search_results"></h2>
+
+<div id="morning_results_container">
+    <h5>Morning Courses</h5>
+    <ul id="morning_results_list">
+    </ul>    
+</div>
+
+<script>
+
+	$(document).ready(function() {
+
+
+$.getJSON("http://vazzak2.ci.northwestern.edu/courses/?term=4540&subject=EECS", function(result) {
+    var earlyCourses = [];
+    
+    $(result).each(function (index, item) {
+        $('#search_results').text((index+1) + " total courses");
+        
+        if (item.start_time > '10:00:00') {
+            if (item.meeting_days === 'Tu'){
+            console.log(item);
+             	$('#morning_results_list').append('<li>' +   item.title + '</li>');
+            }
+        }        
+    });
+});
+	});
+
+
+</script>
+</head>
+<body>
+	<div id="resultarea"></div>
+</body>
+</html>
