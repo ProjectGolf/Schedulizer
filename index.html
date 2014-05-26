@@ -30,11 +30,14 @@
         <div class="panel panel-primary this-panel">
             <div class="panel-heading">Step 1: Choose Your Courses</div>
             <div class="panel-body">
+                <!--Number of Courses -->
+                <h5><span>Build me a schedule with <input type="number" id="numOfCourses" style="width: 35px" max="5" min="1" value="4"> courses
+                </span></h5></br>
 
                 <div id="Courses">
                 <!--Course 1 -->
                 <form name="Course1" class="form-inline" role="form">
-                    <h4><span> Course 1: 
+                    <h5><span> Course 1: 
                     <div class="form-group">
                         <label class="sr-only" for="Subj1">Subject</label>
                         <input type="text" class="form-control" name="Subj1" placeholder="Subject (e.g. EECS)">
@@ -48,12 +51,12 @@
                             <input type="checkbox" id="required1"> Required
                         </label>
                     </div>
-                    </span></h4>
+                    </span></h5>
                 </form></br>
 
                 <!--Course 2 -->
                 <form name="Course2" class="form-inline" role="form">
-                    <h4><span> Course 2:
+                    <h5><span> Course 2:
                     <div class="form-group">
                         <label class="sr-only" for="Subj2">Subject</label>
                         <input type="text" class="form-control" name="Subj2" placeholder="Subject (e.g. EECS)">
@@ -67,11 +70,11 @@
                             <input type="checkbox" id="required2"> Required
                         </label>
                     </div>
-                    </span></h4>
+                    </span></h5>
                 </form></br>
                 <!--Course 3 -->
                 <form name="Course3" class="form-inline" role="form">
-                    <h4><span> Course 3:
+                    <h5><span> Course 3:
                     <div class="form-group">
                         <label class="sr-only" for="Subj3">Subject</label>
                         <input type="text" class="form-control" name="Subj3" placeholder="Subject (e.g. EECS)">
@@ -85,11 +88,11 @@
                             <input type="checkbox" id="required3"> Required
                         </label>
                     </div>
-                    </span></h4>
+                    </span></h5>
                 </form></br>
                  <!--Course 4 -->
                 <form name="Course4" class="form-inline" role="form">
-                    <h4><span> Course 4:
+                    <h5><span> Course 4:
                     <div class="form-group">
                         <label class="sr-only" for="Subj4">Subject</label>
                         <input type="text" class="form-control" name="Subj4" placeholder="Subject (e.g. EECS)">
@@ -103,22 +106,234 @@
                             <input type="checkbox" id="required4"> Required
                         </label>
                     </div>
-                    </span></h4>
+                    </span></h5>
                 </form></br>
-                <button type="submit" class="btn btn-primary" onclick="buildSchedule()">Submit</button>
-            </br></br>
-            </div>
+                <!--Course 5 -->
+                <form name="Course5" class="form-inline" role="form">
+                    <h5><span> Course 5:
+                    <div class="form-group">
+                        <label class="sr-only" for="Subj5">Subject</label>
+                        <input type="text" class="form-control" name="Subj5" placeholder="Subject (e.g. EECS)">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="CourseNum5">Course Number</label>
+                        <input type="text" class="form-control" name="CourseNum5" placeholder="Course # (e.g. 230)">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="required5"> Required
+                        </label>
+                    </div>
+                    </span></h5>
+                </form></br>
+                </div><!--Courses-->
+            </div><!--Panel Body-->
+        </div><!--Panel-->
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Step 2: Choose Your Timings</div>
+            <div class="panel-body">
+                <h5> 
+                    <div class="cols-md-4">No courses before </div></br>
+
+                    <div class="cols-md-4">
+                        <select id="startHour"> 
+                            <option value="1">01</option>
+                            <option value="2">02</option>
+                            <option value="3">03</option>
+                            <option value="4">04</option>
+                            <option value="5">05</option>
+                            <option value="6">06</option>
+                            <option value="7">07</option>
+                            <option value="8">08</option>
+                            <option selected="selected" value="9">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="0">12</option>
+                        </select>
+                        :
+                        <select id="startMinute">
+                            <option selected="selected" value ="0">00</option>
+                            <option value ="1">01</option>
+                            <option value ="2">02</option>
+                            <option value ="3">03</option> 
+                            <option value ="4">04</option>
+                            <option value ="5">05</option> 
+                            <option value ="6">06</option>
+                            <option value ="7">07</option> 
+                            <option value ="8">08</option>
+                            <option value ="9">09</option>
+                            <option value ="10">10</option>
+                            <option value ="11">11</option>
+                            <option value ="12">12</option>
+                            <option value ="13">13</option> 
+                            <option value ="14">14</option>
+                            <option value ="15">15</option> 
+                            <option value ="16">16</option>
+                            <option value ="17">17</option> 
+                            <option value ="18">18</option>
+                            <option value ="19">19</option>
+                            <option value ="20">20</option>
+                            <option value ="21">21</option>
+                            <option value ="22">22</option>
+                            <option value ="23">23</option> 
+                            <option value ="24">24</option>
+                            <option value ="25">25</option> 
+                            <option value ="26">26</option>
+                            <option value ="27">27</option> 
+                            <option value ="28">28</option>
+                            <option value ="29">29</option>
+                            <option value ="30">30</option>
+                            <option value ="31">31</option>
+                            <option value ="32">32</option>
+                            <option value ="33">33</option> 
+                            <option value ="34">34</option>
+                            <option value ="35">35</option> 
+                            <option value ="36">36</option>
+                            <option value ="37">37</option> 
+                            <option value ="38">38</option>
+                            <option value ="39">39</option>
+                            <option value ="40">40</option>
+                            <option value ="41">41</option>
+                            <option value ="42">42</option>
+                            <option value ="43">43</option> 
+                            <option value ="44">44</option>
+                            <option value ="45">45</option> 
+                            <option value ="46">46</option>
+                            <option value ="47">47</option> 
+                            <option value ="48">48</option>
+                            <option value ="49">49</option>
+                            <option value ="50">50</option>
+                            <option value ="51">51</option>
+                            <option value ="52">52</option>
+                            <option value ="53">53</option> 
+                            <option value ="54">54</option>
+                            <option value ="55">55</option> 
+                            <option value ="56">56</option>
+                            <option value ="57">57</option> 
+                            <option value ="58">58</option>
+                            <option value ="59">59</option>
+                        </select>
+
+                        <select id="startTimeOfDay">
+                            <option selected="selected" value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div><!--column-->
+                    
+                    </br>
+                    </br>
+
+                    <div class="cols-md-4">No courses after </div></br>
 
 
+                    <div class="cols-md-4">
+                        <select id="endHour"> 
+                            <option value="1">01</option>
+                            <option value="2">02</option>
+                            <option value="3">03</option>
+                            <option value="4">04</option>
+                            <option value="5">05</option>
+                            <option selected="selected" value="6">06</option>
+                            <option value="7">07</option>
+                            <option value="8">08</option>
+                            <option value="9">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="0">12</option>
+                        </select>
+                        :
+                        <select id="endMinute">
+                            <option selected="selected" value ="0">00</option>
+                            <option value ="1">01</option>
+                            <option value ="2">02</option>
+                            <option value ="3">03</option> 
+                            <option value ="4">04</option>
+                            <option value ="5">05</option> 
+                            <option value ="6">06</option>
+                            <option value ="7">07</option> 
+                            <option value ="8">08</option>
+                            <option value ="9">09</option>
+                            <option value ="10">10</option>
+                            <option value ="11">11</option>
+                            <option value ="12">12</option>
+                            <option value ="13">13</option> 
+                            <option value ="14">14</option>
+                            <option value ="15">15</option> 
+                            <option value ="16">16</option>
+                            <option value ="17">17</option> 
+                            <option value ="18">18</option>
+                            <option value ="19">19</option>
+                            <option value ="20">20</option>
+                            <option value ="21">21</option>
+                            <option value ="22">22</option>
+                            <option value ="23">23</option> 
+                            <option value ="24">24</option>
+                            <option value ="25">25</option> 
+                            <option value ="26">26</option>
+                            <option value ="27">27</option> 
+                            <option value ="28">28</option>
+                            <option value ="29">29</option>
+                            <option value ="30">30</option>
+                            <option value ="31">31</option>
+                            <option value ="32">32</option>
+                            <option value ="33">33</option> 
+                            <option value ="34">34</option>
+                            <option value ="35">35</option> 
+                            <option value ="36">36</option>
+                            <option value ="37">37</option> 
+                            <option value ="38">38</option>
+                            <option value ="39">39</option>
+                            <option value ="40">40</option>
+                            <option value ="41">41</option>
+                            <option value ="42">42</option>
+                            <option value ="43">43</option> 
+                            <option value ="44">44</option>
+                            <option value ="45">45</option> 
+                            <option value ="46">46</option>
+                            <option value ="47">47</option> 
+                            <option value ="48">48</option>
+                            <option value ="49">49</option>
+                            <option value ="50">50</option>
+                            <option value ="51">51</option>
+                            <option value ="52">52</option>
+                            <option value ="53">53</option> 
+                            <option value ="54">54</option>
+                            <option value ="55">55</option> 
+                            <option value ="56">56</option>
+                            <option value ="57">57</option> 
+                            <option value ="58">58</option>
+                            <option value ="59">59</option>
+                        </select>
 
+                        <select id="endTimeOfDay">
+                            <option value="AM">AM</option>
+                            <option selected="selected" value="PM">PM</option>
+                        </select>
+                    </div><!--column-->
+                </h5>
+            </div><!--panel body-->
+        </div> <!--panel-->
 
-
-
-            </div>
-        </div>
-
-    </div> 
+            <button type="submit" class="btn btn-primary" onclick="buildSchedule()">Submit</button>       
+    </div>    
 </body>
 
 </html>
 
+
+<!DOCTYPE html>
+<html>
+<body>
+    <button type="submit" onclick="myFunction()">Submit</button>
+    <script>
+        /*Put your algorithm here
+        function myFunction(){
+
+
+        }*/
+    </script>
+    
+</body
+
+</html>

@@ -12,8 +12,41 @@ function getCourseData(){
 }
 function getUserInput(){
 	//obtains user input from form
-	var numCourses = (document.getElementById('Courses').getElementsByTagName('input').length)/2 -2;//temporary fix. Need to figure out how to exclude checkboxes
-	console.log(numCourses);
+	var courseInputs = document.getElementById('Courses').getElementsByTagName('input');
+	var checkboxCount=0;
+	for (var i=0; i<courseInputs.length; i++) {
+		if (courseInputs[i].type === "checkbox") { checkboxCount++;}
+	}
+	
+	var numCourses = (courseInputs.length-checkboxCount)/2;
+	var numOfCoursesToSchedule = Number(document.getElementById('numOfCourses').value);
+
+	var h1 = document.getElementById("startHour");
+	var m1 = document.getElementById("startMinute");
+	var tod1 = document.getElementById("startTimeOfDay");
+	var h2 = document.getElementById("endHour");
+	var m2 = document.getElementById("endMinute");
+	var tod2 = document.getElementById("endTimeOfDay");
+
+    var startHr = Number(h1.options[h1.selectedIndex].value);
+    var startMin= Number(m1.options[m1.selectedIndex].value);
+    var startTod= tod1.options[tod1.selectedIndex].value;
+    var endHr = Number(h2.options[h2.selectedIndex].value);
+    var endMin= Number(m2.options[m2.selectedIndex].value);
+    var endTod= tod2.options[tod2.selectedIndex].value;
+    if(startTod =="PM") startHr = startHr+12;
+    if(endTod=="PM") endHr = endHr+12;
+
+    var startTime={
+        hour: startHr,
+        minute: startMin
+    };
+    var endTime={
+        hour: endHr,
+        minute: endMin
+    };
+
+
 	var reqCourses = [];
 	var optCourses = [];
 	var numReq = 0;
@@ -43,6 +76,15 @@ function getUserInput(){
 		console.log(reqCourses[k])
 	}
 
+	var UserInput = {
+		startTime: startTime,
+		endTime: endTime,
+		numOfCourses: numOfCoursesToSchedule,
+		requiredCourses: reqCourses,
+		optionalCourses: optCourses
+	};
+
+	console.log(UserInput);
 }
 
 function validateForm(){
@@ -50,6 +92,7 @@ function validateForm(){
 	while (validated==false){*/
 	
 }
+
 
 
 /*
@@ -60,7 +103,7 @@ buildSchedule{
 	- check input fields by pairs. If one is empty, alert user and allow him to resubmit or empty field. If both are empty, 
 	do nothing with the info. If both are filled, getUserInput.
 	- make user repeat until form is valid
-2) [DONE - for course inputs] getUserInput 
+2) [DONE - for course inputs, need to do for start and end times] getUserInput 
 	-store user input in course object and push into required and optional course arrays.
 3) Query Database
 4) Schedule Required
