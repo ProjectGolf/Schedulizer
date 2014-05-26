@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <button type="submit" onclick="algorithm()">Submit</button>
+    <script>
+        function algorithm(){
+        console.log("The algorithm has been called");
+
+
+var reqCo1Se1 = new course(10, 11 ,"MWF");
+var reqCo2Se1 = new course(10.5, 12 ,"MW");
+var reqCo2Se2 = new course(1,2,"TTH");
+
+var optCo1Se1 = new course(15, 16 ,"MWF");
+var optCo1Se2 = new course(14, 15.5 ,"WF");
+var optCo2Se1 = new course(1,2,"TTH");
+
+var SCHEDULELENGTH = 4;
+
+
+var reqArray1 = [reqCo1Se1];
+var reqArray2 = [reqCo2Se1, reqCo2Se2];
+var reqCourses = [ reqArray1, reqArray2];
+
+var optArray1 = [optCo1Se1,optCo1Se2];
+var optArray2 = [optCo2Se1];
+var optCourses = [ optArray1, optArray2];
+
+var schedule = [];
+
+for (i = 0 ; (i < reqCourses.length) && (schedule.length <= SCHEDULELENGTH); i++){
+tempReq = reqCourses[i];
+   for(j = 0 ; j < tempReq.length; j++)
+       compareTo(schedule,tempReq[j]);
+}
+for (i = 0 ; (i < optCourses.length) && (schedule.length <= SCHEDULELENGTH); i++)
+tempOpt = optCourses[i]
+   for(j = 0 ; j < tempOpt.length; j++)
+       compareTo(schedule,tempOpt[j]);
+
+console.log(schedule);
+}
+
+function course(start, end, days){
+this.start =start;
+this.end = end;
+this.days = days
+}
+
+function compareTo(schedule, course){
+console.log("The compareto function works");
+   if (schedule.length == 0)
+       schedule.push(course);
+   else
+       for(i = 0 ; i < schedule.length; i++)
+           if(overlap(schedule[i],course)){}
+else 
+schedule.push(course);
+}
+
+function overlap(course1,course2){
+console.log("The overlap function works");
+   if((course1.days.indexOf(course2.days) != -1) || (course2.days.indexOf(course1.days) != -1))
+       if ((course1.start >= course2.start && course1.start <= course2.end) || (course1.end >= course2.start && course1.start <= course2.end))
+           return true;
+   else
+       return false;
+}
+        
+    </script>
+    
+</body
+
+</html>
