@@ -1,0 +1,34 @@
+days = "MoTuWeThFr";
+var daysSep = [];
+for (i = 0; i < days.length; i+2){
+	daysSep.push(days.slice(i,i+1);
+}
+
+for (i = 0; i < daysSep.length; i++){
+	switch(daysSep[i]){
+	case "Mo":
+		daysSep[i] = 0;
+		break;
+	case "Tu":
+		daysSep[i] = 1;
+		break;
+	case "We":
+		daysSep[i] = 2;
+		break;
+	case "Th":
+		daysSep[i] = 3;
+		break;
+	case "Fr":
+		daysSep[i] = 4;
+		break;
+		}
+}
+
+
+timeS = 09:00:00
+timeE = 09:50:00
+
+var startHour = timeS.slice(0,1);
+var startMin = timeS.slice(3,4);
+var endHour = timeS.slice(0,1);
+var endMin = timeS.slice(3,4);
