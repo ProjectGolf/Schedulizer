@@ -32,7 +32,7 @@ var optCourses = [optArray1, optArray2, optArray3];
 
 var arraySchedules = [];
 
-for (q = 0; q <10; q++){
+for (q = 0; q <30; q++){
 var schedule = [];
  reqArray1 = shuffleArray(reqArray1);
  reqArray2 = shuffleArray(reqArray2);
