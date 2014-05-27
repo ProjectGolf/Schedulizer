@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src='../lib/jquery.min.js'></script>
+<script src='../lib/jquery-ui.custom.min.js'></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+<h2 id="search_results"></h2>
+
+<h3 id="classTest"></h3>
+<h4 id="classTestTwo"></h4>
+
+<div id="morning_results_container">
+    <h5>Morning Courses</h5>
+    <dl id="morning_results_list">
+    </dl>    
+</div>
+
+
+<script>
+
+	$(document).ready(function() {
+
+
+$.getJSON("http://vazzak2.ci.northwestern.edu/courses/?term=4540&subject=EECS", function(result) {
+    var classList = [];
+    var i = 0;
+    $(result).each(function (index, item) {
+        $('#search_results').text((index+1) + " total courses");
+        if (item.start_time > '10:00:00') {
+            if (item.meeting_days === 'We'){
+            console.log(item);
+            
+            	var coursject = {
+    				title: item.title,
+    				professor: item.instructor.name,
+    				catalog_num: item.catalog_num,
+    				section: item.section,
+    				subject: item.subject,
+					meeting_days: item.meeting_days,
+					start_time: item.start_time,
+					end_time: item.start_time
+					}
+            	classList[i] = coursject;
+            	console.log(classList[i]);
+            	i++;
+             	$('#morning_results_list').append('<dt>' +   item.title + '</dt>' +'<dd>' +   item.instructor.name + '</dd>');
+            }
+        }        
+    });
+    
+   	$('#classTestTwo').text("Class is" + classList[0].professor);
+   		
+   	var courseArray = [];   	
+   	for(var j = 0; j < numOptCourses; j++){
+   		var catNum = optionalCourses[j].courseNumber;
+   		for(var h = 0; h<classList.length; h++){
+   				var myArray = [];
+   				if (classList[h].catalog_num == catNum){
+   					myArray.push(classList[h]);
+   				}
+  	 	}	
+   	courseArray.push(myArray);
+   	}
+   	$('#classTest').text(courseArray.length);
+});
+ 
+
+
+	});
+
+
+</script>
+</head>
+<body>
+	<div id="resultarea"></div>
+</body>
+</html>
