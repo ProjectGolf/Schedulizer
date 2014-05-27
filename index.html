@@ -6,9 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Find all possible schedules you can take next quarter">
-    <meta name="author" content="Team Golf">
-    <link rel="shortcut icon" href="favicon_2.ico" type="image/x-icon">
-    <link rel="icon" href="favicon_2.ico" type="image/x-icon">
+
 
     <title>NU Course Schedulizer</title>
 
@@ -19,12 +17,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="index.js"></script>
-
-
-
 </head>
- <style> .this-container{padding-top:25px;}
-        </style>
+
+
+ <style> .this-container{padding-top:25px;}</style>
+
 <body>
     <div class="container this-container">
         <div class="panel panel-primary this-panel">
@@ -126,6 +123,60 @@
                     </div>
                     </span></h5>
                 </form></br>
+                <!--Course 6 -->
+                <form name="Course6" class="form-inline" role="form">
+                    <h5><span> Course 6:
+                    <div class="form-group">
+                        <label class="sr-only" for="Subj6">Subject</label>
+                        <input type="text" class="form-control" name="Subj6" placeholder="Subject (e.g. EECS)">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="CourseNum6">Course Number</label>
+                        <input type="text" class="form-control" name="CourseNum6" placeholder="Course # (e.g. 230)">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="required6"> Required
+                        </label>
+                    </div>
+                    </span></h5>
+                </form></br>
+                <!--Course 7 -->
+                <form name="Course7" class="form-inline" role="form">
+                    <h5><span> Course 7:
+                    <div class="form-group">
+                        <label class="sr-only" for="Subj7">Subject</label>
+                        <input type="text" class="form-control" name="Subj7" placeholder="Subject (e.g. EECS)">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="CourseNum7">Course Number</label>
+                        <input type="text" class="form-control" name="CourseNum7" placeholder="Course # (e.g. 230)">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="required7"> Required
+                        </label>
+                    </div>
+                    </span></h5>
+                </form></br>
+                <!--Course 8 -->
+                <form name="Course8" class="form-inline" role="form">
+                    <h5><span> Course 8:
+                    <div class="form-group">
+                        <label class="sr-only" for="Subj8">Subject</label>
+                        <input type="text" class="form-control" name="Subj8" placeholder="Subject (e.g. EECS)">
+                    </div>
+                    <div class="form-group">
+                        <label class="sr-only" for="CourseNum8">Course Number</label>
+                        <input type="text" class="form-control" name="CourseNum8" placeholder="Course # (e.g. 230)">
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" id="required8"> Required
+                        </label>
+                    </div>
+                    </span></h5>
+                </form></br>
                 </div><!--Courses-->
             </div><!--Panel Body-->
         </div><!--Panel-->
@@ -138,6 +189,7 @@
 
                     <div class="cols-md-4">
                         <select id="startHour"> 
+                            <option value ="null"></option>
                             <option value="1">01</option>
                             <option value="2">02</option>
                             <option value="3">03</option>
@@ -153,6 +205,7 @@
                         </select>
                         :
                         <select id="startMinute">
+                            <option value ="null"></option>
                             <option selected="selected" value ="0">00</option>
                             <option value ="1">01</option>
                             <option value ="2">02</option>
@@ -216,6 +269,7 @@
                         </select>
 
                         <select id="startTimeOfDay">
+                            <option value ="null"></option>
                             <option selected="selected" value="AM">AM</option>
                             <option value="PM">PM</option>
                         </select>
@@ -228,7 +282,8 @@
 
 
                     <div class="cols-md-4">
-                        <select id="endHour"> 
+                        <select id="endHour">
+                            <option value ="null"></option> 
                             <option value="1">01</option>
                             <option value="2">02</option>
                             <option value="3">03</option>
@@ -244,6 +299,7 @@
                         </select>
                         :
                         <select id="endMinute">
+                            <option value ="null"></option>
                             <option selected="selected" value ="0">00</option>
                             <option value ="1">01</option>
                             <option value ="2">02</option>
@@ -307,6 +363,7 @@
                         </select>
 
                         <select id="endTimeOfDay">
+                            <option value ="null"></option>
                             <option value="AM">AM</option>
                             <option selected="selected" value="PM">PM</option>
                         </select>

@@ -1,15 +1,13 @@
 function buildSchedule(){
 	//builds actual schedule
-	//calls getUserInput
-	getUserInput();
+	var userInput = getUserInput();
+	var validated = validateForm(userInput);
+	console.log("validated = "+validated);
+	/*if (validated = true){
+		queryCourseData();
+	}*/
+}
 
-}
-function getCourseData(){
-	//gets user inputs from form
-	//checks for match in database
-	//if there's a match, jump to a scheduler algorithm
-	//if there's no match, alert user and give them the option to continue without class or to enter a new requirement
-}
 function getUserInput(){
 	//obtains user input from form
 	var courseInputs = document.getElementById('Courses').getElementsByTagName('input');
@@ -17,7 +15,6 @@ function getUserInput(){
 	for (var i=0; i<courseInputs.length; i++) {
 		if (courseInputs[i].type === "checkbox") { checkboxCount++;}
 	}
-	
 	var numCourses = (courseInputs.length-checkboxCount)/2;
 	var numOfCoursesToSchedule = Number(document.getElementById('numOfCourses').value);
 
@@ -59,55 +56,96 @@ function getUserInput(){
 		subj = document.forms["Course"+i]["Subj"+i].value;
 		courseNum = document.forms["Course"+i]["CourseNum"+i].value;
 		if (document.getElementById("required"+i).checked==true){
-			reqCourses.push({ subject: subj, courseNumber: courseNum});
-			numReq++;
+			if((subj!=null && subj!="")||(courseNum!=null && courseNum!="")){
+				reqCourses.push({ subject: subj, courseNumber: courseNum});
+				numReq++;
+			}
 		}
 		else{
-			optCourses.push({subject: subj, courseNumber: courseNum});
-			numOpt++;
+			if((subj!=null && subj!="")||(courseNum!=null && courseNum!="")){
+				optCourses.push({subject: subj, courseNumber: courseNum});
+				numOpt++;
+			}
 		}
-	}
-	console.log("Required Courses");
-	for(var j=0; j<numReq; j++){
-		console.log(reqCourses[j])
-	}
-	console.log("Optional Courses");
-	for(var k=0; k<numReq; k++){
-		console.log(reqCourses[k])
 	}
 
 	var UserInput = {
 		startTime: startTime,
 		endTime: endTime,
-		numOfCourses: numOfCoursesToSchedule,
+		numOfCoursesToSchedule: numOfCoursesToSchedule,
+		numReqCourses: numReq,
+		numOptCourses: numOpt,
 		requiredCourses: reqCourses,
 		optionalCourses: optCourses
 	};
-
+	console.log("UserInput Object:");
 	console.log(UserInput);
+	return UserInput;
 }
 
-function validateForm(){
-	/*var validated = false;
-	while (validated==false){*/
-	
+function validateForm(userInput){
+
+	//if there are more courses to schedule than the number of courses entered, report an error
+	var totalCourses = userInput.numReqCourses + userInput.numOptCourses;
+	if (userInput.numOfCoursesToSchedule>totalCourses){
+		alert("Error! The total number of courses you want to put in schedule is greater than total number of courses you entered information for."); 
+		return false;
+	}
+
+	//If start time is later than end time, report an error
+	if (userInput.startTime.hour>userInput.endTime.hour){
+		alert("Error! The start time is later than the end time.");
+		return false;
+	}
+	if(userInput.startTime.hour==userInput.endTime.hour){
+		if (userInput.startTime.minute>=userInput.endTime.minute) { 
+			alert("Error! The start time is later than or equal to the end time.");
+			return false;
+		}
+	}
+
+	//If both course inputs aren't entered for a course, report an error
+	for (var i = 0; i<userInput.numReqCourses; i++){
+		var subject = userInput.requiredCourses[i].subject;
+		var courseNumber = userInput.requiredCourses[i].courseNumber;
+		if((subject==null || subject=="")|| (courseNumber==null|| courseNumber=="")){
+			alert("Error! For all courses entered, both course subject and course number must be provided.");
+			return false;
+		}
+	}
+	for (var i = 0; i<userInput.numOptCourses; i++){
+		var subject = userInput.optionalCourses[i].subject;
+		var courseNumber = userInput.optionalCourses[i].courseNumber;
+		if((subject==null || subject=="")||(courseNumber==null|| courseNumber=="")){
+			alert("Error! For all courses entered, both course subject and course number must be provided.");
+			return false;
+		}
+	}
+
+	//Check for duplicates
+
+	return true;
 }
 
+function queryCourseData(){
+	//gets user inputs from form
+	//checks for match in database
+	//if there's a match, jump to a scheduler algorithm
+	//if there's no match, alert user and give them the option to continue without class or to enter a new requirement
+	//	-->Validate that courses and course numbers actually exist
+}
 
 
 /*
 When user submits required courses:
 
 buildSchedule{
-1) [NOT DONE]Validate form
-	- check input fields by pairs. If one is empty, alert user and allow him to resubmit or empty field. If both are empty, 
-	do nothing with the info. If both are filled, getUserInput.
-	- make user repeat until form is valid
-2) [DONE - for course inputs, need to do for start and end times] getUserInput 
-	-store user input in course object and push into required and optional course arrays.
-3) Query Database
+1) Get user inputs [DONE]
+2) Validate user inputs 
+3) Query database
 4) Schedule Required
 5) Schedule Optional
 6) Filter by Timing
+7) Output onto schedule
 }
 */
