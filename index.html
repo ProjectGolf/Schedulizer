@@ -17,21 +17,110 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="index.js"></script>
+
+    <link href='../Schedulizer/fullcalendar/fullcalendar.css' rel='stylesheet' />
+    <link href='../Schedulizer/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
+    <script src='../Schedulizer/lib/jquery.min.js'></script>
+    <script src='../Schedulizer/lib/jquery-ui.custom.min.js'></script>
+    <script src='../Schedulizer/fullcalendar/fullcalendar.min.js'></script>
+    <script>
+    $(document).ready(function() {
+  
+    $('#calendar').fullCalendar({
+      //Calendar header only contains the title
+      header: {
+        left: '',
+        center: 'title',
+        right: ''
+      },
+      //Each column only displays the day of the week
+      columnFormat: {
+        month: 'ddd',
+        week: 'ddd',
+        day: 'dddd',
+      },
+      //Set the default year, month and day. This only matters such that Monday is the default start date. The actual date is not displayed so it should not matter to the user and the data only sends the day of the week.
+      year: 2014,
+      month: 4,
+      date: 10,
+      allDaySlot: {
+        default: false 
+      },
+      //Create the initial title for the weekly view (the only available view)
+      titleFormat: {
+        week: "'Class Schedule'"
+      },
+      //Hide weekends
+      weekends: false,
+      //Do not allow users to edit the calendar
+      editable: false,
+      //Calendar is initially blank
+      events: [],
+      //Set calendar style
+      defaultView: 'agendaWeek'
+    });
+  });
+</script>
+<style>
+
+  body {
+    margin-top: 40px;
+    font-size: 14px;
+    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+    }
+    
+  #loading {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    }
+
+  #calendar {
+    width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    }
+
+    .this-container{
+        padding-top:25px;
+    }
+
+</style>
 </head>
-
-
- <style> .this-container{padding-top:25px;}</style>
 
 <body>
     <div class="container this-container">
-        <div class="panel panel-primary this-panel">
-            <div class="panel-heading">Step 1: Choose Your Courses</div>
-            <div class="panel-body">
-                <!--Number of Courses -->
-                <h5><span>Build me a schedule with <input type="number" id="numOfCourses" style="width: 35px" max="5" min="1" value="4"> courses
-                </span></h5></br>
 
-                <div id="Courses">
+        <div class="panel-group" id="accordion">
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
+          Step 1: How many courses should be in your schedule?  
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in">
+      <div class="panel-body">
+            <!--Number of Courses -->
+            <h5>
+                <span>Build me a schedule with <input type="number" id="numOfCourses" style="width: 35px" max="5" min="1" value="4"> courses
+                </span>
+            </h5>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
+          Step 2: Choose up to 8 courses. 
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse">
+      <div class="panel-body">
+        <div id="Courses">
                 <!--Course 1 -->
                 <form name="Course1" class="form-inline" role="form">
                     <h5><span> Course 1: 
@@ -178,13 +267,20 @@
                     </span></h5>
                 </form></br>
                 </div><!--Courses-->
-            </div><!--Panel Body-->
-        </div><!--Panel-->
-
-        <div class="panel panel-primary">
-            <div class="panel-heading">Step 2: Choose Your Timings</div>
-            <div class="panel-body">
-                <h5> 
+      </div><!--Panel Body-->
+    </div><!--collapseTwo-->
+  </div><!--Panel-->
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">
+          Step 3: Choose your timings (optional).
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse">
+      <div class="panel-body">
+        <h5> 
                     <div class="cols-md-4">No courses before </div></br>
 
                     <div class="cols-md-4">
@@ -369,11 +465,21 @@
                         </select>
                     </div><!--column-->
                 </h5>
-            </div><!--panel body-->
-        </div> <!--panel-->
+      </div><!--Panel Body-->
+    </div><!--CollapseThree-->
+  </div><!--Panel-->
+</div><!--Panel group-->
+    <button type="submit" class="btn btn-primary" onclick="buildSchedule()">Show Possible Schedules</button>
+    </br>
+</br>
 
-            <button type="submit" class="btn btn-primary" onclick="buildSchedule()">Submit</button>       
-    </div>    
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div id="calendar"></div>
+            <div class="panel-footer">
+                <button type="submit" class="btn btn-primary" onclick="updateEvents()">Next Schedule</button>
+            </div>
+        </div>
+    </div>
+    </div><!--Entire Container-->
 </body>
-
-</html>
