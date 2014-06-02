@@ -127,13 +127,92 @@ function validateForm(userInput){
 	return true;
 }
 
-function queryCourseData(){
-	//gets user inputs from form
-	//checks for match in database
-	//if there's a match, jump to a scheduler algorithm
-	//if there's no match, alert user and give them the option to continue without class or to enter a new requirement
-	//	-->Validate that courses and course numbers actually exist
+function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCourses, numReqCourses){
+	
+	var numClasses = optCourses.length;
+	var OptclassList = [];
+	var i = 0;
+for(var m = 0; m < numClasses; m++){
+	$.getJSON("http://vazzak2.ci.northwestern.edu/courses/?term=4540&subject="+optCourses[m].subject, function(result) {
+        $(result).each(function (index, item) {
+        if (item.start_time > startTime) {
+            if (item.end_time === endTime){
+        	if (item.catalog_num === optCourses[m].courseNumber){
+            
+            	var coursject = {
+    				title: item.title,
+    				professor: item.instructor.name,
+    				catalog_num: item.catalog_num,
+    				section: item.section,
+    				subject: item.subject,
+				meeting_days: item.meeting_days,
+				start_time: item.start_time,
+				end_time: item.start_time
+					};
+            	OptclassList[i] = coursject;
+            	console.log(OptclassList[i]);
+            	i++;
+                                                                    }
+                                            }
+                                            }        
+                                            }
+   
+                                                                                                                            }
+                                    }
+   		
+   	var OptcourseArray = [];   	
+   	for(var j = 0; j < numOptCourses; j++){
+   		var catNum = optCouses[j].courseNumber;
+   		for(var h = 0; h<OptclassList.length; h++){
+   				var myArray = [];
+   				if (OptclassList[h].catalog_num == catNum){
+   					myArray.push(OptclassList[h]);
+   				}
+  	 	}	
+   	OptcourseArray.push(myArray);
+   	}
+        
+        var ReqclassList = [];
+        var g =0;
+        for(var n = 0; n < reqCourses.length; n++){
+	$.getJSON("http://vazzak2.ci.northwestern.edu/courses/?term=4540&subject="+reqCourses[n].subject, function(result) {
+    $(result).each(function (index, item) {
+        if (item.start_time > startTime) {
+            if (item.end_time === endTime){
+        	if (item.catalog_num === reqCourses[n].courseNumber){
+            
+            	var coursject = {
+    				title: item.title,
+    				professor: item.instructor.name,
+    				catalog_num: item.catalog_num,
+    				section: item.section,
+    				subject: item.subject,
+				meeting_days: item.meeting_days,
+				start_time: item.start_time,
+				end_time: item.start_time
+					}
+            	ReqclassList[g] = coursject;
+            	g++;
+                                                                    }
+                                            }
+                                            }        
+                                            }
+   
+                                                                                                                            }
+                                    }
+        var ReqcourseArray = [];   	
+   	for(var j = 0; j < numReqCourses; j++){
+   		var catNum = reqCourses[j].courseNumber;
+   		for(var h = 0; h<ReqclassList.length; h++){
+   				var myArray = [];
+   				if (ReqclassList[h].catalog_num == catNum){
+   					myArray.push(ReqclassList[h]);
+   				}
+  	 	}	
+   	ReqcourseArray.push(myArray);
+   	}
 }
+
 
 
 /*
