@@ -156,9 +156,8 @@ for(var m = 0; m < numClasses; m++){
                                             }
                                             }        
                                             }
-   
-                                                                                                                            }
-                                    }
+                                            )
+                                }
    		
    	var OptcourseArray = [];   	
    	for(var j = 0; j < numOptCourses; j++){
@@ -198,7 +197,7 @@ for(var m = 0; m < numClasses; m++){
                                             }        
                                             }
    
-                                                                                                                            }
+                                    )
                                     }
         var ReqcourseArray = [];   	
    	for(var j = 0; j < numReqCourses; j++){
@@ -211,6 +210,12 @@ for(var m = 0; m < numClasses; m++){
   	 	}	
    	ReqcourseArray.push(myArray);
    	}
+        
+        return [
+            OptcourseArray, 
+            ReqcourseArray
+        ];
+            
 }
 
 
