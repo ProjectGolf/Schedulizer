@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <button type="submit" onclick="algorithm()">Submit</button>
+    <script>
+        function algorithm(){
+
+var reqCo1Se1 = new course(10, 11 ,"MWF");
+var reqCo1Se2 = new course(9,10,"MWF");
+var reqCo2Se1 = new course(10.5, 12 ,"MW");
+var reqCo2Se2 = new course(13,14,"TTH");
+var reqCo2Se3 = new course(14.5,15.5,"TTH");
+
+var optCo1Se1 = new course(15, 16 ,"MWF");
+var optCo1Se2 = new course(14, 15.5 ,"WF");
+var optCo2Se1 = new course(11,12,"TTH");
+var optCo3Se1 = new course(14,16,"MW");
+var optCo3Se2 = new course(11,12,"MWF");
+
+var SCHEDULELENGTH = 4;
+
+
+
+var reqArray1 = [reqCo1Se1];
+var reqArray2 = [reqCo2Se1, reqCo2Se2, reqCo2Se3];
+var reqCourses = [ reqArray1, reqArray2];
+
+var optArray1 = [optCo1Se1,optCo1Se2];
+var optArray2 = [optCo2Se1];
+var optArray3 = [optCo3Se1, optCo3Se2];
+var optCourses = [optArray1, optArray2, optArray3];
+
+var arraySchedules = [];
+
+for (q = 0; q <30; q++){
+var schedule = [];
+ reqArray1 = shuffleArray(reqArray1);
+ reqArray2 = shuffleArray(reqArray2);
+ reqCourses = shuffleArray(reqCourses);
+
+ optArray1 = shuffleArray(optArray1);
+ optArray2 = shuffleArray(optArray2);
+ optCourses = shuffleArray(optCourses);
+
+
+for (i = 0 ; (i < reqCourses.length) && (schedule.length < SCHEDULELENGTH); i++){
+tempReq = reqCourses[i];
+   for(j = 0 ; (j < tempReq.length) && (schedule.length < SCHEDULELENGTH); j++)
+       compareTo(schedule,tempReq[j]);
+}
+
+for (i = 0 ; (i < optCourses.length) && (schedule.length < SCHEDULELENGTH); i++){
+tempOpt = optCourses[i]
+   for(j = 0 ; (j < tempOpt.length) && (schedule.length < SCHEDULELENGTH); j++)
+       compareTo(schedule,tempOpt[j]);
+}
+arraySchedules.push(schedule);
+}
+
+convertSchedule(arraySchedules);
+console.log(arraySchedules);
+}
+
+function convertSchedule(arrSched)
+{
+for (int i = 0; i < arrSched.length; i++){
+	var tempSch = arrSched[i];
+	for (int j = 0; j < tempSch.length; j++){
+		var daysSep = [];
+		for (int a = 0; a < tempSch[j].days.length; a+2){
+			daysSep.push(days.slice(a,a+1);
+		}
+		for (k = 0; k < daysSep.length; k++){
+			switch(daysSep[k]){
+			case "Mo":
+				tempSch[j].daysArray.push(0);
+				break;
+			case "Tu":
+				tempSch[j].daysArray.push(1);
+				break;
+			case "We":
+				tempSch[j].daysArray.push(2);
+				break;
+			case "Th":
+				tempSch[j].daysArray.push(3);
+				break;
+			case "Fr":
+				tempSch[j].daysArray.push(4);
+				break;
+			}
+		}
+		tempSch[j].startHour = tempSch[j].start.slice(0,1);
+		tempSch[j].startMin = tempSch[j].start.slice(3,4);
+		tempSch[j].endHour = tempSch[j].end.slice(0,1);
+		tempSch[j].endMin = tempSch[j].end.slice(3,4);
+	}
+}
+}
+		
+
+function course(start, end, days){
+this.start =start;
+this.end = end;
+this.days = days;
+this.daysArray = [];
+this.startHour = [];
+this.endHour = [];
+this.startMin = [];
+this.endMin = [];
+}
+
+function compareTo(schedule, course){
+	var intOverlap = 1;
+   if (schedule.length == 0)
+       schedule.push(course);
+   else{
+       for(i = 0 ; i < schedule.length; i++){
+           if(overlap(schedule[i],course)){
+           intOverlap=0;
+           }
+				}
+		if (intOverlap ==1)
+			schedule.push(course);
+		}				
+}
+
+function overlap(course1,course2){
+   if((course1.days.indexOf(course2.days) != -1) || (course2.days.indexOf(course1.days) != -1)){
+       if ((course1.start >= course2.start && course1.start <= course2.end) ||
+       (course1.end >= course2.start && course1.start <= course2.end))
+           return true;
+    	else
+    		return false;   
+           }
+   else
+       return false;
+}
+
+/**
+ * Randomize array element order in-place.
+ * Using Fisher-Yates shuffle algorithm.
+ */
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
+        
+    </script>
+    
+</body
+
+</html>
