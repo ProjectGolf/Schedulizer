@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--Import for fullCalendar-->
+<!--UPDATE: Make functional for github pushes-->
+<link href='../fullcalendar-1.6.4/fullcalendar/fullcalendar.css' rel='stylesheet' />
+<link href='../fullcalendar-1.6.4/fullcalendar/fullcalendar.print.css' rel='stylesheet' media='print' />
+<script src='../fullcalendar-1.6.4/lib/jquery.min.js'></script>
+<script src='../fullcalendar-1.6.4/lib/jquery-ui.custom.min.js'></script>
+<script src='../fullcalendar-1.6.4/fullcalendar/fullcalendar.min.js'></script>
+<script>
+  $(document).ready(function() {
+  
+    $('#calendar').fullCalendar({
+      //Calendar header only contains the title
+      header: {
+        left: '',
+        center: 'title',
+        right: ''
+      },
+      //Each column only displays the day of the week
+      columnFormat: {
+        month: 'ddd',
+        week: 'ddd',
+        day: 'dddd',
+      },
+      //Set the default year, month and day. This only matters such that Monday is the default start date. The actual date is not displayed so it should not matter to the user and the data only sends the day of the week.
+      year: 2014,
+      month: 4,
+      date: 10,
+      allDaySlot: {
+        default: false 
+      },
+      //Create the initial title for the weekly view (the only available view)
+      titleFormat: {
+        week: "'Class Schedule'"
+      },
+      //Hide weekends
+      weekends: false,
+      //Do not allow users to edit the calendar
+      editable: false,
+      //Calendar is initially blank
+      events: [],
+      //Set calendar style
+      defaultView: 'agendaWeek'
+    });
+  });
+</script>
+<style>
+
+  body {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 14px;
+    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+    }
+    
+  #loading {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    }
+
+  #calendar {
+    width: 900px;
+    margin: 0 auto;
+    }
+
+</style>
+</head>
+<body>
+    <button type="submit" onclick="algorithm()">Submit</button>
+    <script>
+
+      //Global variable tracking which schedule is currently being looked at
+      var scheduleNum = -1;
+      //Global array tracking the schedules
+      var arraySchedules = [];
+
+      function algorithm(){
+		    var reqCo1Se1 = new course(10, 11 ,"MWF");
+        var reqCo1Se2 = new course(9,10,"MWF");
+        var reqCo2Se1 = new course(10.5, 12 ,"MW");
+        var reqCo2Se2 = new course(13,14,"TTH");
+        var reqCo2Se3 = new course(14.5,15.5,"TTH");
+
+        var optCo1Se1 = new course(15, 16 ,"MWF");
+        var optCo1Se2 = new course(14, 15.5 ,"WF");
+        var optCo2Se1 = new course(11,12,"TTH");
+        var optCo3Se1 = new course(14,16,"MW");
+        var optCo3Se2 = new course(11,12,"MWF");
+
+        var SCHEDULELENGTH = 4;
+
+        var reqArray1 = [reqCo1Se1];
+        var reqArray2 = [reqCo2Se1, reqCo2Se2, reqCo2Se3];
+        var reqCourses = [ reqArray1, reqArray2];
+
+        var optArray1 = [optCo1Se1,optCo1Se2];
+        var optArray2 = [optCo2Se1];
+        var optArray3 = [optCo3Se1, optCo3Se2];
+        var optCourses = [optArray1, optArray2, optArray3];
+
+        arraySchedules = [];
+
+        for (q = 0; q <30; q++){
+          var schedule = [];
+          reqArray1 = shuffleArray(reqArray1);
+          reqArray2 = shuffleArray(reqArray2);
+          reqCourses = shuffleArray(reqCourses);
+
+          optArray1 = shuffleArray(optArray1);
+          optArray2 = shuffleArray(optArray2);
+          optCourses = shuffleArray(optCourses);
+
+          for (i = 0 ; (i < reqCourses.length) && (schedule.length < SCHEDULELENGTH); i++){
+            tempReq = reqCourses[i];
+            for(j = 0 ; (j < tempReq.length) && (schedule.length < SCHEDULELENGTH); j++)
+              compareTo(schedule,tempReq[j]);
+          }
+
+          for (i = 0 ; (i < optCourses.length) && (schedule.length < SCHEDULELENGTH); i++){
+            tempOpt = optCourses[i]
+            for(j = 0 ; (j < tempOpt.length) && (schedule.length < SCHEDULELENGTH); j++)
+              compareTo(schedule,tempOpt[j]);
+          }
+          arraySchedules.push(schedule);
+        }
+      console.log(arraySchedules);
+      updateEvents();
+    }
+
+    function course(start, end, days){
+      this.start =start;
+      this.end = end;
+      this.days = days
+    }
+
+    function compareTo(schedule, course){
+    	var intOverlap = 1;
+      if (schedule.length == 0)
+        schedule.push(course);
+      else{
+        for(i = 0 ; i < schedule.length; i++){
+          if(overlap(schedule[i],course)){
+            intOverlap=0;
+          }
+    	}
+    	if (intOverlap ==1)
+    		schedule.push(course);
+    	}				
+    }
+
+    function overlap(course1,course2){
+      if((course1.days.indexOf(course2.days) != -1) || (course2.days.indexOf(course1.days) != -1)){
+        if ((course1.start >= course2.start && course1.start <= course2.end) ||
+          (course1.end >= course2.start && course1.start <= course2.end))
+          return true;
+       	else
+       		return false;   
+      }
+      else
+        return false;
+    }
+
+    /**
+    * Randomize array element order in-place.
+    * Using Fisher-Yates shuffle algorithm.
+    */
+    function shuffleArray(array) {
+      for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      }
+      return array;
+    }
+
+  function updateEvents() {
+    //Iterate to the next schedule
+    scheduleNum = scheduleNum + 1;
+    //Create a variable tracking the number of events in the current schedule
+    var numberofevents = arraySchedules.length;
+
+    //If the scheudle is greater than the total number of schedules, loop to the beginning
+    if (scheduleNum > numberofevents) {
+      scheduleNum = 0;
+    }
+
+    //Clear all events on the calendar
+    $('#calendar').fullCalendar('removeEvents').fullCalendar('removeEventSources');
+    //Create an array of events to render
+    var events = new Array();
+
+    //Add each course in the schedule to the calendars eventSource
+    for(var i=0;i<numberofevents;i++)
+    {
+      //Day: 'days'
+      //Start: 'startHour', 'startMin'
+      //End: 'endHour', 'endMin'
+      for(var j=0;j < arraySchedules[scheduleNum].course[i].days.length)
+      {
+        //Set the start and end times for the event
+        var start_date = new Date(2014,4,arraySchedules[scheduleNum].course[i].daysArray[j],arraySchedules[scheduleNum].course[i].startHour,arraySchedules[scheduleNum].course[i].startMin);
+        var end_date = new Date(2014,4,arraySchedules[scheduleNum].course[i].daysArray[j],arraySchedules[scheduleNum].course[i].endHour,arraySchedules[scheduleNum].course[i].endMin);
+        //Set the events name
+        var event_name = "Test";
+
+        //Create an event object and set the previously defined information to its variables
+        event = new Object();
+        event.title = event_name;
+        event.start = start_date;
+        event.end = end_date;
+        //Set the basic information of the event
+        event.color = "blue";
+        event.allDay = false;
+      
+        //Add the event to the calendar's eventSource
+        events.push(event);
+      }
+    }
+    //Update the calendar
+    $('#calendar').fullCalendar('addEventSource', events);
+  }
+</script>
+    <div id='loading' style='display:none'>loading...</div>
+    <div id='calendar'></div>
+</body>
+</html>
