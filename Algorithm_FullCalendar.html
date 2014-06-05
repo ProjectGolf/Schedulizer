@@ -94,7 +94,7 @@
 
         var reqArray1 = [reqCo1Se1];
         var reqArray2 = [reqCo2Se1, reqCo2Se2, reqCo2Se3];
-        var reqCourses = [ reqArray1, reqArray2];
+        var reqCourses = [reqArray1, reqArray2];
 
         var optArray1 = [optCo1Se1,optCo1Se2];
         var optArray2 = [optCo2Se1];
@@ -131,7 +131,7 @@
     }
 
     function course(start, end, days){
-      this.start =start;
+      this.start = start;
       this.end = end;
       this.days = days
     }
@@ -199,7 +199,7 @@
       //Day: 'days'
       //Start: 'startHour', 'startMin'
       //End: 'endHour', 'endMin'
-      for(var j=0;j < arraySchedules[scheduleNum].course[i].days.length)
+      for(var j=0;j < arraySchedules[scheduleNum].course[i].days.length; j++)
       {
         //Set the start and end times for the event
         var start_date = new Date(2014,4,arraySchedules[scheduleNum].course[i].daysArray[j],arraySchedules[scheduleNum].course[i].startHour,arraySchedules[scheduleNum].course[i].startMin);
