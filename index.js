@@ -2,13 +2,17 @@ function buildSchedule(){
 
 	//builds actual schedule
 	var userInput = getUserInput();
+      var start = userInput.startTime.concatTime;
+      var end = userInput.endTime.concatTime;
 	var validated = validateForm(userInput);
-	var courseArrays;
 	if (validated = true){
-		courseArrays = queryCourseData(userInput.startTime, userInput.endTime, userInput.optionalCourses, userInput.requiredCourses, userInput.numOptCourses, userInput.numReqCourses);
-		//var optCourses= courseArrays.optCourseArray;
-		//var reqCourses = courseArrays.reqCourseArray;
-		//algorithm(userInput.numOfCoursesToSchedule, optCourses, reqCourses);
+		var courseArrays = queryCourseData(start, end, userInput.optionalCourses, userInput.requiredCourses, userInput.numOptCourses, userInput.numReqCourses);
+		console.log(courseArrays);
+    var optCourses = courseArrays[0];
+    var reqCourses = courseArrays[1];
+    console.log("optCourses: "+optCourses);
+    console.log("reqCourses: "+reqCourses);
+    //algorithm(userInput.numOfCoursesToSchedule, optCourses, reqCourses);
 	}
 }
 
@@ -38,13 +42,28 @@ function getUserInput(){
     if(startTod =="PM") startHr = startHr+12;
     if(endTod=="PM") endHr = endHr+12;
 
+    var H1="";
+    var H2="";
+    var M1="";
+    var M2="";
+    if (startHr<10){H1 = "0"+startHr;}
+    else{H1= startHr;}
+    if (startMin<10){M1 = "0"+startMin;}
+    else{M1=startMin;}
+    if (endHr<10){H2 = "0"+endHr;}
+    else{H2= endHr;}
+    if (endMin<10){M2 = "0"+endMin;}
+    else{M2=endMin;}
+
     var startTime={
         hour: startHr,
-        minute: startMin
+        minute: startMin,
+        concatTime: H1+":"+M1+":00"
     };
     var endTime={
         hour: endHr,
-        minute: endMin
+        minute: endMin,
+        concatTime: H2+":"+M2+":00"
     };
 
 
@@ -131,90 +150,101 @@ function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCours
 	
 	var numClasses = optCourses.length;
 	var OptclassList = [];
+  var OptcourseArray = [];
 	var i = 0;
-for(var m = 0; m < numClasses; m++){
-	$.getJSON("http://vazzak2.ci.northwestern.edu/courses/?term=4540&subject="+optCourses[m].subject, function(result) {
+  for(var m = 0; m < numClasses; m++){
+    $.ajax({
+      async: false,
+      url: "http://vazzak2.ci.northwestern.edu/courses/?term=4540&subject="+optCourses[m].subject,
+      success: function(result) {
         $(result).each(function (index, item) {
-        if (item.start_time > startTime) {
+          if (item.start_time > startTime) {
             if (item.end_time < endTime){
-        	if (item.catalog_num == optCourses[m].courseNumber){
-            
-            	var coursject = {
-    				title: item.title,
-    				professor: item.instructor.name,
-    				catalog_num: item.catalog_num,
-    				section: item.section,
-    				subject: item.subject,
-				meeting_days: item.meeting_days,
-				start_time: item.start_time,
-				end_time: item.start_time
-					};
-            	OptclassList[i] = coursject;
-            	console.log(OptclassList[i]);
-            	i++;
-                                                                    }
-                                            }
-                                            }        
-                                            });
-                                            
-                                });
-                                }
-   	var OptcourseArray = [];   	
+              if (item.catalog_num == optCourses[m].courseNumber){
+                var coursject = {
+                  title: item.title,
+                  professor: item.instructor.name,
+                  catalog_num: item.catalog_num,
+                  section: item.section,
+                  subject: item.subject,
+                  meeting_days: item.meeting_days,
+                  start_time: item.start_time,
+                  end_time: item.start_time
+                };
+               OptclassList[i] = coursject;
+               
+               i++;
+              }
+            }
+          }        
+          });
+      }
+    });
+    }
+  	
    	for(var j = 0; j < numOptCourses; j++){
    		var catNum = optCourses[j].courseNumber;
+      var subj = optCourses[j].subject;
+      var myArray = [];
    		for(var h = 0; h<OptclassList.length; h++){
-   				var myArray = [];
-   				if (OptclassList[h].catalog_num == catNum){
+   				if ((OptclassList[h].catalog_num == catNum)&&(OptclassList[h].subject==subj)){
    					myArray.push(OptclassList[h]);
+            console.log("match found. index = " +h)
+            console.log(myArray);
    				}
   	 	}	
-   	OptcourseArray.push(myArray);
+   	  OptcourseArray.push(myArray);
    	}
         
-        var ReqclassList = [];
-        var g =0;
-        for(var n = 0; n < reqCourses.length; n++){
-	$.getJSON("http://vazzak2.ci.northwestern.edu/courses/?term=4540&subject="+reqCourses[n].subject, function(result) {
-    $(result).each(function (index, item) {
-        if (item.start_time > startTime) {
+    var ReqclassList = [];
+    var ReqcourseArray = [];
+    var g =0;
+    for(var n = 0; n < reqCourses.length; n++){
+      $.ajax({
+      async: false,
+      url: "http://vazzak2.ci.northwestern.edu/courses/?term=4540&subject="+reqCourses[n].subject,
+      success: function(result) {
+        $(result).each(function (index, item) {
+          if (item.start_time > startTime) {
             if (item.end_time < endTime){
-        	if (item.catalog_num == reqCourses[n].courseNumber){
-            
-            	var coursject = {
-    				title: item.title,
-    				professor: item.instructor.name,
-    				catalog_num: item.catalog_num,
-    				section: item.section,
-    				subject: item.subject,
-				meeting_days: item.meeting_days,
-				start_time: item.start_time,
-				end_time: item.start_time
-					};
-            	ReqclassList[g] = coursject;
-            	g++;
-                                                                    }
-                                            }
-                                            }        
-                                            });
-   
-                                    
-                                    });
-                                }
-        var ReqcourseArray = [];   	
+              if (item.catalog_num == reqCourses[n].courseNumber){
+                var coursject = {
+                  title: item.title,
+                  professor: item.instructor.name,
+                  catalog_num: item.catalog_num,
+                  section: item.section,
+                  subject: item.subject,
+                  meeting_days: item.meeting_days,
+                  start_time: item.start_time,
+                  end_time: item.start_time
+                };
+                ReqclassList[g] = coursject;
+                g++;
+              }
+            }
+          }
+        });
+      }
+    });
+    }
+       	
    	for(var j = 0; j < numReqCourses; j++){
-   		var catNum = reqCourses[j].courseNumber;
+      var catNum = reqCourses[j].courseNumber;
+      var subj = reqCourses[j].subject;
+      var myArray = [];
    		for(var h = 0; h<ReqclassList.length; h++){
-   				var myArray = [];
-   				if (ReqclassList[h].catalog_num == catNum){
+   				if ((ReqclassList[h].catalog_num == catNum)&&(ReqclassList[h].subject == subj)){
+            console.log("match found. index = " +h);
    					myArray.push(ReqclassList[h]);
    				}
   	 	}	
    	ReqcourseArray.push(myArray);
    	}
         
-        return [OptcourseArray, ReqcourseArray];
-            
+    return [OptcourseArray, ReqcourseArray];          
 }
+
+
 	//Global variable tracking which schedule is currently being looked at
     var scheduleNum = -1;
     //Global array tracking the schedules
