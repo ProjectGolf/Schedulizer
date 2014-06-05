@@ -163,7 +163,7 @@ for(var m = 0; m < numClasses; m++){
                                 }
    	var OptcourseArray = [];   	
    	for(var j = 0; j < numOptCourses; j++){
-   		var catNum = optCouses[j].courseNumber;
+   		var catNum = optCourses[j].courseNumber;
    		for(var h = 0; h<OptclassList.length; h++){
    				var myArray = [];
    				if (OptclassList[h].catalog_num === catNum){
