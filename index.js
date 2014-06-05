@@ -7,12 +7,9 @@ function buildSchedule(){
 	var validated = validateForm(userInput);
 	if (validated = true){
 		var courseArrays = queryCourseData(start, end, userInput.optionalCourses, userInput.requiredCourses, userInput.numOptCourses, userInput.numReqCourses);
-		console.log(courseArrays);
     var optCourses = courseArrays[0];
     var reqCourses = courseArrays[1];
-    console.log("optCourses: "+optCourses);
-    console.log("reqCourses: "+reqCourses);
-    //algorithm(userInput.numOfCoursesToSchedule, optCourses, reqCourses);
+    algorithm(userInput.numOfCoursesToSchedule, optCourses, reqCourses);
 	}
 }
 
@@ -189,8 +186,6 @@ function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCours
    		for(var h = 0; h<OptclassList.length; h++){
    				if ((OptclassList[h].catalog_num == catNum)&&(OptclassList[h].subject==subj)){
    					myArray.push(OptclassList[h]);
-            console.log("match found. index = " +h)
-            console.log(myArray);
    				}
   	 	}	
    	  OptcourseArray.push(myArray);
@@ -234,7 +229,6 @@ function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCours
       var myArray = [];
    		for(var h = 0; h<ReqclassList.length; h++){
    				if ((ReqclassList[h].catalog_num == catNum)&&(ReqclassList[h].subject == subj)){
-            console.log("match found. index = " +h);
    					myArray.push(ReqclassList[h]);
    				}
   	 	}	
