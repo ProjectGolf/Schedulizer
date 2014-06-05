@@ -155,16 +155,16 @@ for(var m = 0; m < numClasses; m++){
                                                                     }
                                             }
                                             }        
-                                            }
-                                            )
+                                            });
+                                            
+                                });
                                 }
-   		
    	var OptcourseArray = [];   	
    	for(var j = 0; j < numOptCourses; j++){
    		var catNum = optCouses[j].courseNumber;
    		for(var h = 0; h<OptclassList.length; h++){
    				var myArray = [];
-   				if (OptclassList[h].catalog_num == catNum){
+   				if (OptclassList[h].catalog_num === catNum){
    					myArray.push(OptclassList[h]);
    				}
   	 	}	
@@ -189,22 +189,23 @@ for(var m = 0; m < numClasses; m++){
 				meeting_days: item.meeting_days,
 				start_time: item.start_time,
 				end_time: item.start_time
-					}
+					};
             	ReqclassList[g] = coursject;
             	g++;
                                                                     }
                                             }
                                             }        
-                                            }
+                                            });
    
-                                    )
-                                    }
+                                    
+                                    });
+                                }
         var ReqcourseArray = [];   	
    	for(var j = 0; j < numReqCourses; j++){
    		var catNum = reqCourses[j].courseNumber;
    		for(var h = 0; h<ReqclassList.length; h++){
    				var myArray = [];
-   				if (ReqclassList[h].catalog_num == catNum){
+   				if (ReqclassList[h].catalog_num === catNum){
    					myArray.push(ReqclassList[h]);
    				}
   	 	}	
@@ -217,7 +218,6 @@ for(var m = 0; m < numClasses; m++){
         ];
             
 }
-
 
 
 /*
