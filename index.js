@@ -56,7 +56,8 @@ function getUserInput(){
 
 	for (var i=1; i<=numCourses; i++){
 		subj = document.forms["Course"+i]["Subj"+i].value;
-		courseNum = document.forms["Course"+i]["CourseNum"+i].value+"-0";
+		courseNum = document.forms["Course"+i]["CourseNum"+i].value;
+
 		if (document.getElementById("required"+i).checked==true){
 			if((subj!=null && subj!="")||(courseNum!=null && courseNum!="")){
 				reqCourses.push({ subject: subj, courseNumber: courseNum});
