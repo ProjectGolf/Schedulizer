@@ -2,10 +2,12 @@ function buildSchedule(){
 	//builds actual schedule
 	var userInput = getUserInput();
 	var validated = validateForm(userInput);
+	var courseArrays;
 	console.log("validated = "+validated);
-	/*if (validated = true){
-		queryCourseData();
-	}*/
+	if (validated = true){
+		courseArrays = queryCourseData(userInput.startTime, userInput.endTime, userInput.optionalCourses, userInput.requiredCourses, userInput.numOptCourses, userInput.numReqCourses);
+	}
+	console.log(courseArrays);
 }
 
 function getUserInput(){
@@ -54,7 +56,7 @@ function getUserInput(){
 
 	for (var i=1; i<=numCourses; i++){
 		subj = document.forms["Course"+i]["Subj"+i].value;
-		courseNum = document.forms["Course"+i]["CourseNum"+i].value;
+		courseNum = document.forms["Course"+i]["CourseNum"+i].value+"-0";
 		if (document.getElementById("required"+i).checked==true){
 			if((subj!=null && subj!="")||(courseNum!=null && courseNum!="")){
 				reqCourses.push({ subject: subj, courseNumber: courseNum});
