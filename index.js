@@ -137,7 +137,7 @@ for(var m = 0; m < numClasses; m++){
         $(result).each(function (index, item) {
         if (item.start_time > startTime) {
             if (item.end_time < endTime){
-        	if (item.catalog_num === optCourses[m].courseNumber){
+        	if (item.catalog_num == optCourses[m].courseNumber){
             
             	var coursject = {
     				title: item.title,
@@ -164,7 +164,7 @@ for(var m = 0; m < numClasses; m++){
    		var catNum = optCourses[j].courseNumber;
    		for(var h = 0; h<OptclassList.length; h++){
    				var myArray = [];
-   				if (OptclassList[h].catalog_num === catNum){
+   				if (OptclassList[h].catalog_num == catNum){
    					myArray.push(OptclassList[h]);
    				}
   	 	}	
@@ -178,7 +178,7 @@ for(var m = 0; m < numClasses; m++){
     $(result).each(function (index, item) {
         if (item.start_time > startTime) {
             if (item.end_time < endTime){
-        	if (item.catalog_num === reqCourses[n].courseNumber){
+        	if (item.catalog_num == reqCourses[n].courseNumber){
             
             	var coursject = {
     				title: item.title,
@@ -205,7 +205,7 @@ for(var m = 0; m < numClasses; m++){
    		var catNum = reqCourses[j].courseNumber;
    		for(var h = 0; h<ReqclassList.length; h++){
    				var myArray = [];
-   				if (ReqclassList[h].catalog_num === catNum){
+   				if (ReqclassList[h].catalog_num == catNum){
    					myArray.push(ReqclassList[h]);
    				}
   	 	}	
