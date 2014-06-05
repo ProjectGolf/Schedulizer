@@ -1,13 +1,15 @@
 function buildSchedule(){
+
 	//builds actual schedule
 	var userInput = getUserInput();
 	var validated = validateForm(userInput);
 	var courseArrays;
-	console.log("validated = "+validated);
 	if (validated = true){
 		courseArrays = queryCourseData(userInput.startTime, userInput.endTime, userInput.optionalCourses, userInput.requiredCourses, userInput.numOptCourses, userInput.numReqCourses);
+		//var optCourses= courseArrays.optCourseArray;
+		//var reqCourses = courseArrays.reqCourseArray;
+		//algorithm(userInput.numOfCoursesToSchedule, optCourses, reqCourses);
 	}
-	console.log(courseArrays);
 }
 
 function getUserInput(){
@@ -81,8 +83,6 @@ function getUserInput(){
 		requiredCourses: reqCourses,
 		optionalCourses: optCourses
 	};
-	console.log("UserInput Object:");
-	console.log(UserInput);
 	return UserInput;
 }
 
@@ -124,9 +124,6 @@ function validateForm(userInput){
 			return false;
 		}
 	}
-
-	//Check for duplicates
-
 	return true;
 }
 
@@ -215,24 +212,224 @@ for(var m = 0; m < numClasses; m++){
    	ReqcourseArray.push(myArray);
    	}
         
-        return [
-            OptcourseArray, 
-            ReqcourseArray
-        ];
+        return [OptcourseArray, ReqcourseArray];
             
 }
+	//Global variable tracking which schedule is currently being looked at
+    var scheduleNum = -1;
+    //Global array tracking the schedules
+    var arraySchedules = [];
 
+    function algorithm(numCourses, optCourses, reqCourses){
+    	//optCourses = array of optional courses
+    	//reqCourses = array of required courses
 
-/*
-When user submits required courses:
+  		var reqCo1Se1 = new course("10:00","11:00","MoWeFr");
+  		var reqCo1Se2 = new course("9:00","10:00","MoWeFr");
+  		var reqCo2Se1 = new course("10:30","12:00","MoWe");
+  		var reqCo2Se2 = new course("13:00","14:00","TuTh");
+  		var reqCo2Se3 = new course("14:30","15:30","TuTh");
 
-buildSchedule{
-1) Get user inputs [DONE]
-2) Validate user inputs 
-3) Query database
-4) Schedule Required
-5) Schedule Optional
-6) Filter by Timing
-7) Output onto schedule
-}
-*/
+  		var optCo1Se1 = new course("15:00","16:00","MoWeFr");
+  		var optCo1Se2 = new course("14:00","15:30","WeFr");
+  		var optCo2Se1 = new course("11:00","12:00","TuTh");
+  		var optCo3Se1 = new course("14:00","16:00","MoWe");
+  		var optCo3Se2 = new course("11:00","12:00","MoWeFr");
+
+  		var SCHEDULELENGTH = numCourses;
+
+  		var reqArray1 = [reqCo1Se1];
+  		var reqArray2 = [reqCo2Se1, reqCo2Se2, reqCo2Se3];
+  		var reqCourses = [ reqArray1, reqArray2];
+
+  		var optArray1 = [optCo1Se1,optCo1Se2];
+  		var optArray2 = [optCo2Se1];
+  		var optArray3 = [optCo3Se1, optCo3Se2];
+  		var optCourses = [optArray1, optArray2, optArray3];
+
+  		arraySchedules = [];
+
+  		for (var q = 0; q <30; q++){
+  			var schedule = [];
+   			reqArray1 = shuffleArray(reqArray1);
+   			reqArray2 = shuffleArray(reqArray2);
+   			reqCourses = shuffleArray(reqCourses);
+
+  			optArray1 = shuffleArray(optArray1);
+   			optArray2 = shuffleArray(optArray2);
+   			optCourses = shuffleArray(optCourses);
+
+  			for (var i = 0 ; (i < reqCourses.length) && (schedule.length < SCHEDULELENGTH); i++){
+  				tempReq = reqCourses[i];
+     				for(var j = 0 ; (j < tempReq.length) && (schedule.length < SCHEDULELENGTH); j++)
+         				compareTo(schedule,tempReq[j]);
+  			}
+
+  			for (var i = 0 ; (i < optCourses.length) && (schedule.length < SCHEDULELENGTH); i++){
+  				tempOpt = optCourses[i]
+     				for(var j = 0 ; (j < tempOpt.length) && (schedule.length < SCHEDULELENGTH); j++)
+         				compareTo(schedule,tempOpt[j]);
+  			}
+  			arraySchedules.push(schedule);
+		  }
+		  arraySchedules = convertSchedule(arraySchedules);
+		  //console.log(arraySchedules);
+		  updateEvents();
+	  }
+
+	function convertSchedule(arrSched)
+	{
+		for (var i = 0; i < arrSched.length; i++){
+			var tempSch = arrSched[i];
+			for (var j = 0; j < tempSch.length; j++){
+				var daysSep = [];
+				for (var a = 0; a < tempSch[j].days.length; a=a+2){
+					daysSep.push(tempSch[j].days.slice(a,a+2));
+				}
+				for (var k = 0; k < daysSep.length; k++)
+        {
+					switch(daysSep[k])
+          {
+					case "Mo":
+            if (!inArray(5,tempSch[j].daysArray))
+						  tempSch[j].daysArray.push(5);
+					break;
+					case "Tu":
+            if (!inArray(6,tempSch[j].daysArray))
+						  tempSch[j].daysArray.push(6);
+						break;
+					case "We":
+            if (!inArray(7,tempSch[j].daysArray))
+						  tempSch[j].daysArray.push(7);
+						break;
+					case "Th":
+            if (!inArray(8,tempSch[j].daysArray))
+						  tempSch[j].daysArray.push(8);
+						break;
+					case "Fr":
+            if (!inArray(9,tempSch[j].daysArray))
+						  tempSch[j].daysArray.push(9);
+						break;
+					}
+        }
+				tempSch[j].startHour = (tempSch[j].start.toString()).slice(0,2);
+				tempSch[j].startMin = (tempSch[j].start.toString()).slice(3,5);
+				tempSch[j].endHour = (tempSch[j].end.toString()).slice(0,2);
+				tempSch[j].endMin = (tempSch[j].end.toString()).slice(3,5);
+			}
+      arrSched[i] = tempSch;
+		}
+    return arrSched;
+	}
+
+  function inArray(searchVal,array){
+    var lengthofarray = array.length;
+    for(var i = 0; i < lengthofarray; i++)
+    {
+      if (array[i] == searchVal)
+        return true;
+    }
+    return false;
+  }
+		
+	function course(start, end, days){
+		this.start =start;
+		this.end = end;
+		this.days = days;
+		this.daysArray = [];
+		this.startHour = [];
+		this.endHour = [];
+		this.startMin = [];
+		this.endMin = [];
+	}
+
+	function compareTo(schedule, course){
+		var intOverlap = 1;
+   		if (schedule.length == 0)
+       		schedule.push(course);
+   		else{
+       		for(i = 0 ; i < schedule.length; i++){
+           		if(overlap(schedule[i],course)){
+           			intOverlap=0;
+           		}
+			}
+			if (intOverlap ==1)
+				schedule.push(course);
+		}				
+	}
+
+	function overlap(course1,course2){
+   		if((course1.days.indexOf(course2.days) != -1) || (course2.days.indexOf(course1.days) != -1)){
+    		if ((course1.start >= course2.start && course1.start <= course2.end) ||
+       		(course1.end >= course2.start && course1.start <= course2.end))
+           		return true;
+    		else
+    			return false;   
+    	}
+   		else
+       		return false;
+	}
+
+	/**
+ 	* Randomize array element order in-place.
+ 	* Using Fisher-Yates shuffle algorithm.
+ 	*/
+	function shuffleArray(array) {
+    	for (var i = array.length - 1; i > 0; i--) {
+	        var j = Math.floor(Math.random() * (i + 1));
+        	var temp = array[i];
+        	array[i] = array[j];
+        	array[j] = temp;
+    	}
+    	return array;
+	}
+
+	function updateEvents() {
+    	//Iterate to the next schedule
+    	scheduleNum = scheduleNum + 1;
+
+      //If the scheudle is greater than the total number of schedules, loop to the beginning
+      if (scheduleNum >= arraySchedules.length) {
+          scheduleNum = 0;
+      }
+
+    	//Create a variable tracking the number of events in the current schedule
+    	var numberofevents = arraySchedules[scheduleNum].length;
+
+    	//Clear all events on the calendar
+    	$('#calendar').fullCalendar('removeEvents').fullCalendar('removeEventSources');
+    	//Create an array of events to render
+    	var events = new Array();
+
+	    //Add each course in the schedule to the calendars eventSource
+	    for(var i=0; i<numberofevents; i++)
+    	{
+      		//Day: 'days'
+		      //Start: 'startHour', 'startMin'
+      		//End: 'endHour', 'endMin'
+          var thisSched = arraySchedules[scheduleNum];
+          for(var j=0; j < thisSched[i].daysArray.length; j++)
+      		{
+        		//Set the start and end times for the event
+        		var start_date = new Date(2014,4,thisSched[i].daysArray[j], thisSched[i].startHour, thisSched[i].startMin);
+        		var end_date = new Date(2014,4,thisSched[i].daysArray[j], thisSched[i].endHour, thisSched[i].endMin);
+
+        		//Set the events name
+        		var event_name = "Test";
+
+        		//Create an event object and set the previously defined information to its variables
+        		event = new Object();
+        		event.title = event_name;
+        		event.start = start_date;
+        		event.end = end_date;
+        		//Set the basic information of the event
+        		event.color = "blue";
+        		event.allDay = false;
+		      
+		        //Add the event to the calendar's eventSource
+		        events.push(event);
+      		}
+    	}
+    	//Update the calendar
+    	$('#calendar').fullCalendar('addEventSource', events);
+  	}
