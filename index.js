@@ -138,7 +138,7 @@ for(var m = 0; m < numClasses; m++){
 	$.getJSON("http://vazzak2.ci.northwestern.edu/courses/?term=4540&subject="+optCourses[m].subject, function(result) {
         $(result).each(function (index, item) {
         if (item.start_time > startTime) {
-            if (item.end_time === endTime){
+            if (item.end_time < endTime){
         	if (item.catalog_num === optCourses[m].courseNumber){
             
             	var coursject = {
@@ -179,7 +179,7 @@ for(var m = 0; m < numClasses; m++){
 	$.getJSON("http://vazzak2.ci.northwestern.edu/courses/?term=4540&subject="+reqCourses[n].subject, function(result) {
     $(result).each(function (index, item) {
         if (item.start_time > startTime) {
-            if (item.end_time === endTime){
+            if (item.end_time < endTime){
         	if (item.catalog_num === reqCourses[n].courseNumber){
             
             	var coursject = {
