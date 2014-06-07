@@ -7,6 +7,7 @@ function buildSchedule(){
 	var validated = validateForm(userInput);
 	if (validated = true){
 		var courseArrays = queryCourseData(start, end, userInput.optionalCourses, userInput.requiredCourses, userInput.numOptCourses, userInput.numReqCourses);
+    console.log(courseArrays);
     var optCourses = courseArrays[0];
     var reqCourses = courseArrays[1];
     algorithm(userInput.numOfCoursesToSchedule, optCourses, reqCourses);
@@ -155,8 +156,8 @@ function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCours
       url: "http://vazzak2.ci.northwestern.edu/courses/?term=4540&subject="+optCourses[m].subject,
       success: function(result) {
         $(result).each(function (index, item) {
-          if (item.start_time > startTime) {
-            if (item.end_time < endTime){
+          if (item.start_time >= startTime) {
+            if (item.end_time <= endTime){
               if (item.catalog_num == optCourses[m].courseNumber){
                 var coursject = {
                   title: item.title,
@@ -248,7 +249,9 @@ function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCours
 
       var reqCourses =[];
       var optCourses =[];
+      var SCHEDULELENGTH = numCourses;
 
+      //Converts Queried data into form that algorithm can use
       for (var ii = 0 ; ii < reqCoursesIn.length; ii++){
         var numSections = reqCoursesIn[ii].length;
         //console.log("number of sections: "+numSections);
@@ -259,7 +262,6 @@ function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCours
         }
         reqCourses.push(reqArray);
       }
-
       for (var kk = 0 ; kk < optCoursesIn.length; kk++){
         var numSections = optCoursesIn[kk].length;
         //console.log("number of sections: "+numSections);
@@ -270,30 +272,8 @@ function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCours
         }
         optCourses.push(optArray);
       }
-     
 
-  		//var reqCo1Se1 = new course("10:00","11:00","MoWeFr");
-  		//var reqCo1Se2 = new course("9:00","10:00","MoWeFr");
-  		//var reqCo2Se1 = new course("10:30","12:00","MoWe");
-  		//var reqCo2Se2 = new course("13:00","14:00","TuTh");
-  		//var reqCo2Se3 = new course("14:30","15:30","TuTh");
-
-  		//var optCo1Se1 = new course("15:00","16:00","MoWeFr");
-  		//var optCo1Se2 = new course("14:00","15:30","WeFr");
-  		//var optCo2Se1 = new course("11:00","12:00","TuTh");
-  		//var optCo3Se1 = new course("14:00","16:00","MoWe");
-  		//var optCo3Se2 = new course("11:00","12:00","MoWeFr");
-
-  		var SCHEDULELENGTH = numCourses;
-
-  		//var reqArray1 = [reqCo1Se1, reqCo1Se2];
-  		//var reqArray2 = [reqCo2Se1, reqCo2Se2, reqCo2Se3];
-  		//var reqCourses = [ reqArray1, reqArray2];
-
-  		//var optArray1 = [optCo1Se1,optCo1Se2];
-  		//var optArray2 = [optCo2Se1];
-  		//var optArray3 = [optCo3Se1, optCo3Se2];
-  		//var optCourses = [optArray1, optArray2, optArray3];
+  		
 
   		arraySchedules = [];
 
@@ -470,7 +450,7 @@ function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCours
         		var end_date = new Date(2014,4,thisSched[i].daysArray[j], thisSched[i].endHour, thisSched[i].endMin);
 
         		//Set the events name
-        		var event_name = "Test";
+        		var event_name = thisSched[i].reference.subject + " " + thisSched[i].reference.catalog_num;
 
         		//Create an event object and set the previously defined information to its variables
         		event = new Object();
