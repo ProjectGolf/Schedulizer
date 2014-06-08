@@ -446,8 +446,8 @@ function checkDays(course1, course2){
   }
 
 	/**
- 	* Randomize array element order in-place.
- 	* Using Fisher-Yates shuffle algorithm.
+ 	* Randomize the array by switching the order of each array.
+ 	* Uses Fisher-Yates shuffle algorithm.
  	*/
 	function shuffleArray(array) {
     	for (var i = array.length - 1; i > 0; i--) {
