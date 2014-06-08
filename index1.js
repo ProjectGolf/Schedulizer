@@ -167,7 +167,7 @@ function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCours
                   subject: item.subject,
                   meeting_days: item.meeting_days,
                   start_time: item.start_time,
-                  end_time: item.start_time
+                  end_time: item.end_time
                 };
                OptclassList[i] = coursject;
                
@@ -272,7 +272,8 @@ function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCours
         }
         optCourses.push(optArray);
       }
-
+        //console.log(reqCourses);
+        //console.log(optCourses);
   		
 
   		arraySchedules = [];
@@ -294,14 +295,22 @@ function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCours
    			
   			for (var i = 0 ; (i < reqCourses.length) && (schedule.length < SCHEDULELENGTH); i++){
   				tempReq = reqCourses[i];
-     				for(var j = 0 ; (j < tempReq.length) && (schedule.length < SCHEDULELENGTH); j++)
+          var scheduleLengthOld = schedule.length;
+     				for(var j = 0 ; (j < tempReq.length) && (schedule.length < SCHEDULELENGTH); j++){
          				compareTo(schedule,tempReq[j]);
+                if (schedule.length > scheduleLengthOld)
+                  break;
+              }
   			}
 
   			for (var i = 0 ; (i < optCourses.length) && (schedule.length < SCHEDULELENGTH); i++){
   				tempOpt = optCourses[i]
-     				for(var j = 0 ; (j < tempOpt.length) && (schedule.length < SCHEDULELENGTH); j++)
+          var scheduleLengthOld2 =  schedule.length;
+     				for(var j = 0 ; (j < tempOpt.length) && (schedule.length < SCHEDULELENGTH); j++){
          				compareTo(schedule,tempOpt[j]);
+                if (schedule.length > scheduleLengthOld2)
+                  break;
+              }
   			}
   			arraySchedules.push(schedule);
 		  }
@@ -394,9 +403,11 @@ function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCours
 	}
 
 	function overlap(course1,course2){
-   		if((course1.days.indexOf(course2.days) != -1) || (course2.days.indexOf(course1.days) != -1)){
-    		if ((course1.start >= course2.start && course1.start <= course2.end) ||
-       		(course1.end >= course2.start && course1.start <= course2.end))
+   		//if((course1.days.indexOf(course2.days) != -1) || (course2.days.indexOf(course1.days) != -1)){
+    	//if(!checkDays(course1,course2))	
+      if ((course1.start >= course2.start && course1.start <= course2.end) ||
+       	(course1.end >= course2.start && course1.start <= course2.end)){
+        if(checkDays(course1,course2)) 
            		return true;
     		else
     			return false;   
@@ -404,6 +415,35 @@ function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCours
    		else
        		return false;
 	}
+
+function checkDays(course1, course2){
+    schedIndicator = 0;
+    if (schedIndicator ==0){
+      var course1_days = [];
+      var course2_days = [];
+      for (var i=0; i<course1.days.length; i+=2){
+        course1_days.push(course1.days.substring (i, i+2));
+      }
+        
+      for (var j=0; j<course2.days.length; j+=2){
+        course2_days.push(course2.days.substring (j, j+2));
+      }
+      for (var ii=0; ii<course1_days.length; ii++){
+        for (var jj=0; jj<course2_days.length; jj++){
+          if (course1_days[ii]==course2_days[jj]) 
+            return true;
+        }
+      }
+      return false;
+    }
+    else{
+      for (var k=0; k<course1.length; k++){
+          var daysOverlap = checkDays(course1[k], course2, 0);
+          if (daysOverlap) return true;
+      }
+      return false;
+    }
+  }
 
 	/**
  	* Randomize array element order in-place.
