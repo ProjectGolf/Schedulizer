@@ -245,115 +245,121 @@ function queryCourseData(startTime, endTime, optCourses, reqCourses, numOptCours
     //Global array tracking the schedules
     var arraySchedules = [];
 
-    function algorithm(numCourses, optCoursesIn, reqCoursesIn){
+function algorithm(numCourses, optCoursesIn, reqCoursesIn){
+/*********************************************************************
+*Algorithm to place courses in the schedule that fits without overlap
+*Takes in data from the API sorted into a required courses array.
+*Each index of the array holds an array of sections available of that course.
+*The same applies for optional course array.
+**********************************************************************/
+var reqCourses =[];
+var optCourses =[];
+var SCHEDULELENGTH = numCourses;
 
-      var reqCourses =[];
-      var optCourses =[];
-      var SCHEDULELENGTH = numCourses;
-
-      //Converts Queried data into form that algorithm can use
-      for (var ii = 0 ; ii < reqCoursesIn.length; ii++){
-        var numSections = reqCoursesIn[ii].length;
-        //console.log("number of sections: "+numSections);
-        var reqArray = [];
-        for (var jj = 0; jj < numSections; jj++){
-          var nextCourse = new course(reqCoursesIn[ii][jj]);
+//Converts Queried data into form that algorithm can use
+   for (var ii = 0 ; ii < reqCoursesIn.length; ii++){
+    var numSections = reqCoursesIn[ii].length;
+    var reqArray = [];
+    for (var jj = 0; jj < numSections; jj++){
+        var nextCourse = new course(reqCoursesIn[ii][jj]);
           reqArray.push(nextCourse);
         }
-        reqCourses.push(reqArray);
-      }
-      for (var kk = 0 ; kk < optCoursesIn.length; kk++){
-        var numSections = optCoursesIn[kk].length;
-        //console.log("number of sections: "+numSections);
-        var optArray = [];
-        for (var ll = 0; ll < numSections; ll++){
+    reqCourses.push(reqArray);
+    }
+    
+    for (var kk = 0 ; kk < optCoursesIn.length; kk++){
+      var numSections = optCoursesIn[kk].length;
+      var optArray = [];
+      for (var ll = 0; ll < numSections; ll++){
           var nextCourse = new course(optCoursesIn[kk][ll]);
           optArray.push(nextCourse);
         }
-        optCourses.push(optArray);
+      optCourses.push(optArray);
       }
-        //console.log(reqCourses);
-        //console.log(optCourses);
-  		
 
-  		arraySchedules = [];
+ arraySchedules = [];
 
-  		for (var q = 0; q <30; q++){
-  			var schedule = [];
+ for (var q = 0; q <30; q++){
+ 	//Creates 30 different schedules
+  	var schedule = []; //Empties old schedule
+  	
+  	//Shuffles Arrays to provide new ordering
         for (var aa = 0 ; aa < reqCourses.length; aa++){
-          for (var bb = 0; bb < reqCourses[aa].length; bb++){
-            reqCourses[aa] = shuffleArray(reqCourses[aa]);
-          }
-          reqCourses = shuffleArray(reqCourses);
+          	for (var bb = 0; bb < reqCourses[aa].length; bb++){
+        	reqCourses[aa] = shuffleArray(reqCourses[aa]);
+          	}
+        reqCourses = shuffleArray(reqCourses);
         }
-      for (var cc = 0 ; cc < optCourses.length; cc++){
-        for (var dd = 0; dd < optCourses[cc].length; dd++){
-          optCourses[cc] = shuffleArray(optCourses[cc]);
-        }
+        
+        for (var cc = 0 ; cc < optCourses.length; cc++){
+        	for (var dd = 0; dd < optCourses[cc].length; dd++){
+          	optCourses[cc] = shuffleArray(optCourses[cc]);
+        	}
         optCourses = shuffleArray(optCourses);
         }
-   			
-  			for (var i = 0 ; (i < reqCourses.length) && (schedule.length < SCHEDULELENGTH); i++){
-  				tempReq = reqCourses[i];
-          var scheduleLengthOld = schedule.length;
-     				for(var j = 0 ; (j < tempReq.length) && (schedule.length < SCHEDULELENGTH); j++){
-         				compareTo(schedule,tempReq[j]);
-                if (schedule.length > scheduleLengthOld)
-                  break;
-              }
-  			}
+   	
+   	//Comparings next class with classes in schedule and looks for overlap		
+  	for (var i = 0 ; (i < reqCourses.length) && (schedule.length < SCHEDULELENGTH); i++){
+  		tempReq = reqCourses[i];
+          	var scheduleLengthOld = schedule.length;
+     		for(var j = 0 ; (j < tempReq.length) && (schedule.length < SCHEDULELENGTH); j++){
+         		compareTo(schedule,tempReq[j]);
+                	if (schedule.length > scheduleLengthOld)
+                  	break;
+        		}
+  		}
+	// Repeated comparison with optional courses instead.
+  	for (var i = 0 ; (i < optCourses.length) && (schedule.length < SCHEDULELENGTH); i++){
+  		tempOpt = optCourses[i];
+        	var scheduleLengthOld2 =  schedule.length;
+     		for(var j = 0 ; (j < tempOpt.length) && (schedule.length < SCHEDULELENGTH); j++){
+         		compareTo(schedule,tempOpt[j]);
+                	if (schedule.length > scheduleLengthOld2)
+                  	break;
+        	        }
+  		}
+ arraySchedules.push(schedule);
+ }
+arraySchedules = convertSchedule(arraySchedules);
+updateEvents();
+// End Scheduling Algorithm Function
+}
 
-  			for (var i = 0 ; (i < optCourses.length) && (schedule.length < SCHEDULELENGTH); i++){
-  				tempOpt = optCourses[i]
-          var scheduleLengthOld2 =  schedule.length;
-     				for(var j = 0 ; (j < tempOpt.length) && (schedule.length < SCHEDULELENGTH); j++){
-         				compareTo(schedule,tempOpt[j]);
-                if (schedule.length > scheduleLengthOld2)
-                  break;
-              }
-  			}
-  			arraySchedules.push(schedule);
-		  }
-		  arraySchedules = convertSchedule(arraySchedules);
-		  //console.log(arraySchedules);
-		  updateEvents();
-	  }
-
-	function convertSchedule(arrSched)
-	{
-		for (var i = 0; i < arrSched.length; i++){
-			var tempSch = arrSched[i];
-			for (var j = 0; j < tempSch.length; j++){
-				var daysSep = [];
-				for (var a = 0; a < tempSch[j].days.length; a=a+2){
-					daysSep.push(tempSch[j].days.slice(a,a+2));
-				}
-				for (var k = 0; k < daysSep.length; k++)
-        {
-					switch(daysSep[k])
-          {
-					case "Mo":
-            if (!inArray(5,tempSch[j].daysArray))
-						  tempSch[j].daysArray.push(5);
+function convertSchedule(arrSched)
+{
+	for (var i = 0; i < arrSched.length; i++){
+		var tempSch = arrSched[i];
+		for (var j = 0; j < tempSch.length; j++){
+			var daysSep = [];
+			for (var a = 0; a < tempSch[j].days.length; a=a+2){
+				daysSep.push(tempSch[j].days.slice(a,a+2));
+			}
+			for (var k = 0; k < daysSep.length; k++)
+        		{
+			switch(daysSep[k])
+          		{
+				case "Mo":
+            				if (!inArray(5,tempSch[j].daysArray))
+					  tempSch[j].daysArray.push(5);
 					break;
-					case "Tu":
-            if (!inArray(6,tempSch[j].daysArray))
-						  tempSch[j].daysArray.push(6);
-						break;
-					case "We":
-            if (!inArray(7,tempSch[j].daysArray))
-						  tempSch[j].daysArray.push(7);
-						break;
-					case "Th":
-            if (!inArray(8,tempSch[j].daysArray))
-						  tempSch[j].daysArray.push(8);
-						break;
-					case "Fr":
-            if (!inArray(9,tempSch[j].daysArray))
-						  tempSch[j].daysArray.push(9);
-						break;
-					}
-        }
+				case "Tu":
+            				if (!inArray(6,tempSch[j].daysArray))
+					  tempSch[j].daysArray.push(6);
+					break;
+				case "We":
+            				if (!inArray(7,tempSch[j].daysArray))
+					  tempSch[j].daysArray.push(7);
+					break;
+				case "Th":
+            				if (!inArray(8,tempSch[j].daysArray))
+					  tempSch[j].daysArray.push(8);
+					break;
+				case "Fr":
+            				if (!inArray(9,tempSch[j].daysArray))
+					  tempSch[j].daysArray.push(9);
+					break;
+			}
+        	}
 				tempSch[j].startHour = (tempSch[j].start.toString()).slice(0,2);
 				tempSch[j].startMin = (tempSch[j].start.toString()).slice(3,5);
 				tempSch[j].endHour = (tempSch[j].end.toString()).slice(0,2);
