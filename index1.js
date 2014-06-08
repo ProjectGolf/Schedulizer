@@ -1,5 +1,6 @@
 /*****************************************************************************
  * NU Course Schedulizer
+ * Team Golf
  * Coded by Sama Kadakia, Shawn Caeiro, Sachin Lal, 
  * Cameron MacArthur, Andrew Hoff, Cancan Jin
  * 
