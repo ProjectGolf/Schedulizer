@@ -1,3 +1,31 @@
+/*****************************************************************************
+ * NU Course Schedulizer
+ * Coded by Sama Kadakia, Shawn Caeiro, Sachin Lal, 
+ * Cameron MacArthur, Andrew Hoff, Cancan Jin
+ * 
+ * Provides students with a way to visualize schedules based on user
+ * inputs, class requiremnts, and class overlap.
+ * 
+ * Functions listed in index1.js:
+ * buildSchedule() - main function running subprograms
+ * getUserInput() - gets user input from HTML form
+ * validateForm() - checks form illogical user inputs
+ * queryCourseData() - calls the API based on user inputs
+ * algortihm() - schedules courses based on overlap and require/optional preference
+ * convertSchedule() - converts data into FullCalendar useable format
+ * inArray() - checks if value is present in said array
+ * course() - used to create course 'objects' that are used throughout the program
+ * compareTo() - compares course with schedule for overlap
+ * overlap() - checks for time and day overlap
+ * daysOverlap() - checks for day overlap
+ * suffleArray() - shuffles the order of courses for next schedule
+ * updateEvents() - updates FullCalendar
+ * 
+ * Created Spring 2014 EECS 214
+*****************************************************************************/
+
+
+
 function buildSchedule(){
 
 	//builds actual schedule
@@ -368,9 +396,9 @@ function convertSchedule(arrSched)
       arrSched[i] = tempSch;
 		}
     return arrSched;
-	}
+}
 
-  function inArray(searchVal,array){
+function inArray(searchVal,array){
     var lengthofarray = array.length;
     for(var i = 0; i < lengthofarray; i++)
     {
@@ -380,37 +408,35 @@ function convertSchedule(arrSched)
     return false;
   }
 		
-	function course(reference){
-		this.reference = reference;
-    this.start =reference.start_time;
-		this.end = reference.end_time;
-		this.days = reference.meeting_days;
-    this.daysArray = [];
-		this.startHour = [];
-		this.endHour = [];
-		this.startMin = [];
-		this.endMin = [];
-
+function course(reference){
+	this.reference = reference;
+	this.start =reference.start_time;
+	this.end = reference.end_time;
+	this.days = reference.meeting_days;
+	this.daysArray = [];
+	this.startHour = [];
+	this.endHour = [];
+	this.startMin = [];
+	this.endMin = [];
 	}
 
-	function compareTo(schedule, course){
-		var intOverlap = 1;
-   		if (schedule.length == 0)
-       		schedule.push(course);
-   		else{
+function compareTo(schedule, course){
+	var intOverlap = 1;
+	if (schedule.length == 0)
+       	schedule.push(course);
+   	else{
        		for(i = 0 ; i < schedule.length; i++){
-           		if(overlap(schedule[i],course)){
+        		if(overlap(schedule[i],course)){
            			intOverlap=0;
            		}
-			}
-			if (intOverlap ==1)
-				schedule.push(course);
+		}
+		if (intOverlap ==1)
+		schedule.push(course);
 		}				
 	}
 
-	function overlap(course1,course2){
-   		//if((course1.days.indexOf(course2.days) != -1) || (course2.days.indexOf(course1.days) != -1)){
-    	//if(!checkDays(course1,course2))	
+function overlap(course1,course2){
+// Checks for course overlap	
       if ((course1.start >= course2.start && course1.start <= course2.end) ||
        	(course1.end >= course2.start && course1.start <= course2.end)){
         if(checkDays(course1,course2)) 
@@ -423,6 +449,12 @@ function convertSchedule(arrSched)
 	}
 
 function checkDays(course1, course2){
+/***************************************
+ * Checks to see if there is day overlap
+ * Places if course's days in array and then
+ * compares the days for any overlap
+ * Precondition is that there was already time overlap
+ *******************************************/
     schedIndicator = 0;
     if (schedIndicator ==0){
       var course1_days = [];
@@ -451,31 +483,30 @@ function checkDays(course1, course2){
     }
   }
 
-	/**
- 	* Randomize the array by switching the order of each array.
- 	* Uses Fisher-Yates shuffle algorithm.
- 	*/
-	function shuffleArray(array) {
-    	for (var i = array.length - 1; i > 0; i--) {
+/**
+* Randomize the array by switching the order of each array.
+* Uses Fisher-Yates shuffle algorithm.
+*/
+function shuffleArray(array) {
+	for (var i = array.length - 1; i > 0; i--) {
 	        var j = Math.floor(Math.random() * (i + 1));
         	var temp = array[i];
         	array[i] = array[j];
         	array[j] = temp;
     	}
-    	return array;
-	}
+   	return array;
+}
 
-	function updateEvents() {
+function updateEvents() {
     	//Iterate to the next schedule
-    	scheduleNum = scheduleNum + 1;
-
-      //If the scheudle is greater than the total number of schedules, loop to the beginning
-      if (scheduleNum >= arraySchedules.length) {
+scheduleNum = scheduleNum + 1;
+//If the scheudle is greater than the total number of schedules, loop to the beginning
+   if (scheduleNum >= arraySchedules.length) {
           scheduleNum = 0;
-      }
+   }
 
-    	//Create a variable tracking the number of events in the current schedule
-    	var numberofevents = arraySchedules[scheduleNum].length;
+//Create a variable tracking the number of events in the current schedule
+	var numberofevents = arraySchedules[scheduleNum].length;
 
     	//Clear all events on the calendar
     	$('#calendar').fullCalendar('removeEvents').fullCalendar('removeEventSources');
@@ -513,4 +544,4 @@ function checkDays(course1, course2){
     	}
     	//Update the calendar
     	$('#calendar').fullCalendar('addEventSource', events);
-  	}
+  }
